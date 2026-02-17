@@ -10,15 +10,15 @@ body {
   color: white;
   font-family: Arial, sans-serif;
   margin: 0;
-  height: 100vh;           /* Ocupa toda la altura de la ventana */
+  height: 100vh;
   display: flex;
-  flex-direction: column;   /* Organiza verticalmente */
-  justify-content: center;  /* Centrado vertical */
-  align-items: center;      /* Centrado horizontal */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 #counter {
   font-size: 80px;
-  margin: 20px 0;           /* Espacio arriba y abajo */
+  margin: 20px 0;
 }
 button {
   font-size: 30px;
@@ -43,7 +43,7 @@ button {
 <script>
   // Tu configuración de Firebase
   const firebaseConfig = {
-    apiKey: "AIzaSyD9jySzZfR5dXzOlSxX7deNnWdkswdfbD4",
+    apiKey: "AIzaSyD9jySzZfR5dXzOlS7deNnWdkswdfbD4",
     authDomain: "the1millionclick.firebaseapp.com",
     projectId: "the1millionclick",
     storageBucket: "the1millionclick.firebasestorage.app",
@@ -56,19 +56,34 @@ button {
   const db = firebase.firestore();
   const docRef = db.collection("contador").doc("global");
 
-  // Mostrar valor inicial del contador
+  // Mostrar valor inicial
+  docRef.get().then(doc => {
+    if(doc.exists){
+      document.getElementById("counter").innerText = doc.data().clicks;
+    } else {
+      // Crear documento si no existía
+      docRef.set({ clicks: 0 });
+      document.getElementById("counter").innerText = 0;
+    }
+  });
+
+  // Incrementar contador
+  function incrementClick() {
+    docRef.update({
+      clicks: firebase.firestore.FieldValue.increment(1)
+    }).then(() => {
+      console.log("Click sumado!");
+    }).catch(err => {
+      console.error("Error al sumar click:", err);
+    });
+  }
+
+  // Actualizar contador en tiempo real
   docRef.onSnapshot(doc => {
     if(doc.exists){
       document.getElementById("counter").innerText = doc.data().clicks;
     }
   });
-
-  // Incrementar contador al hacer click
-  function incrementClick() {
-    docRef.update({
-      clicks: firebase.firestore.FieldValue.increment(1)
-    });
-  }
 </script>
 
 </body>
