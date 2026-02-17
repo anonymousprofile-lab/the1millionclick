@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>ZeroTo1Million</title>
+<title>The1MillionClick</title>
 <style>
 body {
   background-color: black;
@@ -10,7 +11,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   height: 100vh;           /* Ocupa toda la altura de la ventana */
-  display: flex;           
+  display: flex;
   flex-direction: column;   /* Organiza verticalmente */
   justify-content: center;  /* Centrado vertical */
   align-items: center;      /* Centrado horizontal */
@@ -35,39 +36,34 @@ button {
 <h1 id="counter">0</h1>
 <button onclick="incrementClick()">CLICK</button>
 
-<!-- Firebase SDK -->
+<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
- // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+  // Tu configuración de Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyD9jySzZfR5dXzOlSxX7deNnWdkswdfbD4",
+    authDomain: "the1millionclick.firebaseapp.com",
+    projectId: "the1millionclick",
+    storageBucket: "the1millionclick.firebasestorage.app",
+    messagingSenderId: "745014483649",
+    appId: "1:745014483649:web:8e662aed4a4cf777705240"
+  };
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyD9jySzZfR5dXzOlSxX7deNnWdkswdfbD4",
-  authDomain: "the1millionclick.firebaseapp.com",
-  projectId: "the1millionclick",
-  storageBucket: "the1millionclick.firebasestorage.app",
-  messagingSenderId: "745014483649",
-  appId: "1:745014483649:web:8e662aed4a4cf777705240"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
+  // Inicializar Firebase
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
   const docRef = db.collection("contador").doc("global");
 
+  // Mostrar valor inicial del contador
   docRef.onSnapshot(doc => {
     if(doc.exists){
       document.getElementById("counter").innerText = doc.data().clicks;
     }
   });
 
+  // Incrementar contador al hacer click
   function incrementClick() {
     docRef.update({
       clicks: firebase.firestore.FieldValue.increment(1)
