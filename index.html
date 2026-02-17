@@ -34,14 +34,14 @@ button {
 <body>
 
 <h1 id="counter">0</h1>
-<button onclick="incrementClick()">CLICK</button>
+<button id="clickButton">CLICK</button>
 
 <!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
-  // Tu configuración de Firebase
+  // Configuración de Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyD9jySzZfR5dXzOlS7deNnWdkswdfbD4",
     authDomain: "the1millionclick.firebaseapp.com",
@@ -56,33 +56,32 @@ button {
   const db = firebase.firestore();
   const docRef = db.collection("contador").doc("global");
 
-  // Mostrar valor inicial
+  // Crear documento si no existe
   docRef.get().then(doc => {
-    if(doc.exists){
-      document.getElementById("counter").innerText = doc.data().clicks;
-    } else {
-      // Crear documento si no existía
+    if (!doc.exists) {
       docRef.set({ clicks: 0 });
-      document.getElementById("counter").innerText = 0;
     }
   });
 
-  // Incrementar contador
-  function incrementClick() {
+  // Función para actualizar contador en la pantalla
+  function updateCounter(value) {
+    document.getElementById("counter").innerText = value;
+  }
+
+  // Mostrar contador inicial y actualizar en tiempo real
+  docRef.onSnapshot(doc => {
+    if(doc.exists){
+      updateCounter(doc.data().clicks);
+    }
+  });
+
+  // Incrementar clicks al pulsar el botón
+  document.getElementById("clickButton").addEventListener("click", () => {
     docRef.update({
       clicks: firebase.firestore.FieldValue.increment(1)
-    }).then(() => {
-      console.log("Click sumado!");
     }).catch(err => {
       console.error("Error al sumar click:", err);
     });
-  }
-
-  // Actualizar contador en tiempo real
-  docRef.onSnapshot(doc => {
-    if(doc.exists){
-      document.getElementById("counter").innerText = doc.data().clicks;
-    }
   });
 </script>
 
