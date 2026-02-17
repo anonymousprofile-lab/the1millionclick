@@ -40,14 +40,23 @@ button {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
-  const firebaseConfig = {
-    apiKey: "TU_API_KEY",
-    authDomain: "TU_PROYECTO.firebaseapp.com",
-    projectId: "TU_PROYECTO",
-    storageBucket: "TU_PROYECTO.appspot.com",
-    messagingSenderId: "TU_SENDER_ID",
-    appId: "TU_APP_ID"
-  };
+ // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyD9jySzZfR5dXzOlSxX7deNnWdkswdfbD4",
+  authDomain: "the1millionclick.firebaseapp.com",
+  projectId: "the1millionclick",
+  storageBucket: "the1millionclick.firebasestorage.app",
+  messagingSenderId: "745014483649",
+  appId: "1:745014483649:web:8e662aed4a4cf777705240"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
